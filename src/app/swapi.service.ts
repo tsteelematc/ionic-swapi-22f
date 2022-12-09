@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { repeat } from 'rxjs';
+import { EMPTY, expand, repeat } from 'rxjs';
 
 export interface SwapiPlanetShape {
   next: string;
@@ -15,7 +15,8 @@ export class SwapiService {
 
   loadPlanets = () => {
     return this.httpSvc.get<SwapiPlanetShape>("https://swapi.dev/api/planets").pipe(
-      repeat(6)
+      // repeat(6)
+      expand(x => x.next ? this.httpSvc.get<SwapiPlanetShape>(x.next) : EMPTY)
     );  
   };
 }
