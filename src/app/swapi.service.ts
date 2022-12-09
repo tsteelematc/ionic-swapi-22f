@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, expand, repeat, concat } from 'rxjs';
 
-export interface SwapiPlanetShape {
+export interface SwapiPlanetResponse {
   next: string;
   results: {name: string}[];
 }
@@ -14,9 +14,9 @@ export class SwapiService {
   constructor(private httpSvc: HttpClient) { }
 
   loadPlanets = () => {
-    return this.httpSvc.get<SwapiPlanetShape>("https://swapi.dev/api/planets").pipe(
+    return this.httpSvc.get<SwapiPlanetResponse>("https://swapi.dev/api/planets").pipe(
       // repeat(6)
-      expand(x => x.next ? this.httpSvc.get<SwapiPlanetShape>(x.next) : EMPTY)
+      expand(x => x.next ? this.httpSvc.get<SwapiPlanetResponse>(x.next) : EMPTY)
     );  
 
     // const p1 = this.httpSvc.get<SwapiPlanetShape>("https://swapi.dev/api/planets");
